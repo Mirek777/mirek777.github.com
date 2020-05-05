@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        table {
+            border: 1px solid darkblue;        }
+
+        td,
+        th {
+            border: 1px solid rebeccapurple;
+        }
+    </style>
+</head>
+<body>
+<table id="table" contenteditable="true">
+    <tr>
+        <th>Номер объекта</th>
+        <th>Номер двигателя</th>
+        <th>Мощность двигателя</th>
+        <th>Длительность запуска</th>
+        <th>Пусковой ток</th>
+        <th>Состояние</th>
+        <th>Описание</th>
+    </tr>
+    <tr>
+        <td>  №</td>
+        <td>  №</td>
+        <td>  10 кВт</td>
+        <td>  5 с</td>
+        <td>  100 А</td>
+        <td>  Отл.</td>
+        <td>  Отх. линии</td>
+    </tr>
+</table>
+<input type="button" id="ld" value="Загрузить данные из файла">
+<input type="button" id="sv" value="Сохранить">
+<script>
+    document.getElementById("ld").onclick = loadHandler;
+    document.getElementById("sv").onclick = saveHandler;
+
+    async function loadHandler() {
+        let array = (await httpAsync("myfile.txt")).split("\t");
+        let tab = document.getElementById("table");
+        let num = 0;
+        //while (num < 3) {
+        tab.rows[num].cells[0].textContent = array[0];
+        tab.rows[num].cells[1].textContent = array[1];
+        tab.rows[num].cells[2].textContent = array[2];
+        tab.rows[num].cells[3].textContent = array[3];
+        tab.rows[num].cells[4].textContent = array[4];
+        tab.rows[num].cells[5].textContent = array[5];
+        tab.rows[num].cells[6].textContent = array[6];
+        tab.rows[num].cells[7].textContent = array[7];
+        //num++;}
+    }
+
+    async function saveHandler() {
+        let tab = document.getElementById("table");
+        let body = tab.rows[1].cells[0].textContent + "\t" +
+            tab.rows[1].cells[1].textContent + "\t" +
+            tab.rows[1].cells[2].textContent + "\t" +
+            tab.rows[1].cells[3].textContent + "\t" +
+            tab.rows[1].cells[4].textContent + "\t" +
+            tab.rows[1].cells[5].textContent + "\t" +
+            tab.rows[1].cells[6].textContent + "\t" +
+            tab.rows[1].cells[7].textContent + "\t" +
+            tab.rows[1].cells[8].textContent;
+
+        console.log(await httpAsync("myfile.txt", "POST", body));
+    }
+
+    function httpAsync(url, method = "GET", body) {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method, url);
+
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    console.log(xhr.getAllResponseHeaders());
+                    resolve(xhr.response);
+                }
+                else {
+                    reject(new Error(`${xhr.status}: ${xhr.statusText}`));
+                }
+            };
+            xhr.onerror = () => {
+                reject(new Error(`Ошибка сети. Сервер не отдал код ошибки.`));
+            };
+            if (body) {
+                //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                xhr.send(body);
+            }
+            else
+                xhr.send();
+        });
+    }
+</script>
+</body>
+</html>
