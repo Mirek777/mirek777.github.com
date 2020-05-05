@@ -1,5 +1,12 @@
 const http = require("http");
 const fs = require("fs");
+const path = require("path");
+
+const filePath = path.resolve(__dirname, 'myfile.json');
+const data = fs.readFileSync(filePath);
+var superHeroes = JSON.parse(data.toString());
+console.log(superHeroes);
+
 
 http.createServer(function (request, response) {
     switch (request.method) {
@@ -9,8 +16,11 @@ http.createServer(function (request, response) {
             console.log(request.url);
 
             let data = "";
-            request.on("data", function (chunk) {data += chunk.toString();     });
-            request.on("end", function () {                console.log(data);
+            request.on("data", function (chunk) {
+                data += chunk.toString();
+            });
+            request.on("end", function () {
+                console.log(data);
                 fs.writeFile(request.url.substr(1), data, function (error) {
                     if (error) throw new Error("Ошибка!"); // если возникла ошибка
                 });

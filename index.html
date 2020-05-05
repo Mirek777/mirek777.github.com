@@ -1,19 +1,22 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
+    <title>Контроль технического состояния электродвигателей</title>
     <style>
         table {
-            border: 1px solid darkblue;        }
-
+            border: 1px solid blue;        }
         td,
         th {
             border: 1px solid rebeccapurple;
         }
     </style>
+    <script src="dopapp.js"></script>
 </head>
 <body>
-<table id="table" contenteditable="true">
+<h1> Контроль состояния электродвигателей </h1>
+<p>Насосная станция</p>
+<table id="table">
     <tr>
         <th>Номер объекта</th>
         <th>Номер двигателя</th>
@@ -21,80 +24,124 @@
         <th>Длительность запуска</th>
         <th>Пусковой ток</th>
         <th>Состояние</th>
-        <th>Описание</th>
     </tr>
-    <tr>
-        <td>  №</td>
-        <td>  №</td>
-        <td>  10 кВт</td>
-        <td>  5 с</td>
-        <td>  100 А</td>
-        <td>  Отл.</td>
-        <td>  Отх. линии</td>
-    </tr>
+
+    </thead>
+    <tbody>
+    </tbody>
 </table>
-<input type="button" id="ld" value="Загрузить данные из файла">
-<input type="button" id="sv" value="Сохранить">
+<span id="pict1">     </span>
+<input type="button" value="Загрузить данные" onclick="downl();" />
+
+<span id="pict1">     </span>
+<input type="button" value="План помещения" onclick="start();" />
+<script src="dopapp.js"></script>
 <script>
-    document.getElementById("ld").onclick = loadHandler;
-    document.getElementById("sv").onclick = saveHandler;
 
-    async function loadHandler() {
-        let array = (await httpAsync("myfile.txt")).split("\t");
-        let tab = document.getElementById("table");
-        let num = 0;
-        //while (num < 3) {
-        tab.rows[num].cells[0].textContent = array[0];
-        tab.rows[num].cells[1].textContent = array[1];
-        tab.rows[num].cells[2].textContent = array[2];
-        tab.rows[num].cells[3].textContent = array[3];
-        tab.rows[num].cells[4].textContent = array[4];
-        tab.rows[num].cells[5].textContent = array[5];
-        tab.rows[num].cells[6].textContent = array[6];
-        tab.rows[num].cells[7].textContent = array[7];
-        //num++;}
-    }
 
-    async function saveHandler() {
-        let tab = document.getElementById("table");
-        let body = tab.rows[1].cells[0].textContent + "\t" +
-            tab.rows[1].cells[1].textContent + "\t" +
-            tab.rows[1].cells[2].textContent + "\t" +
-            tab.rows[1].cells[3].textContent + "\t" +
-            tab.rows[1].cells[4].textContent + "\t" +
-            tab.rows[1].cells[5].textContent + "\t" +
-            tab.rows[1].cells[6].textContent + "\t" +
-            tab.rows[1].cells[7].textContent + "\t" +
-            tab.rows[1].cells[8].textContent;
+    var items =  [{
+        substationnumber: '41',
+        enginenumber: '161-1',
+        enginepower: '110 кВт',
+        durationofrun: '5 с',
+        startingcurrent: '2894,7 А',
+        condition: 'удовл.',
+        link: 'engine.html'
+    },
+        {
+            substationnumber: '42',
+            enginenumber: '160-5',
+            enginepower: '150 кВт',
+            durationofrun: '7 с',
+            startingcurrent: '3947,4 А',
+            condition: 'удовл.',
+            link: 'engine.html'
+        },
+        {
+            substationnumber: '41',
+            enginenumber: '161-1',
+            enginepower: '110 кВт',
+            durationofrun: '5 с',
+            startingcurrent: '2894,7 А',
+            condition: 'удовл.',
+            link: 'engine.html'
+        },
+        {
+            substationnumber: '42',
+            enginenumber: '160-5',
+            enginepower: '150 кВт',
+            durationofrun: '7 с',
+            startingcurrent: '3947,4 А',
+            condition: 'удовл.',
+            link: 'engine.html'
+        },
+        {   substationnumber: '43',
+            enginenumber: '161-2',
+            enginepower: '110 кВт',
+            durationofrun: '20 с',
+            startingcurrent: '4342,1 А',
+            condition: 'требуется ремонт',
+            link: 'engine.html'
+        }];
 
-        console.log(await httpAsync("myfile.txt", "POST", body));
-    }
+    function downl() {
+        var container = document.getElementById("table").getElementsByTagName("tbody")[0];
+        items.forEach(item => {
+            var tr = document.createElement("tr");
 
-    function httpAsync(url, method = "GET", body) {
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(method, url);
+            var enginenumberName = document.createElement('a');
+            enginenumberName.href = item.link;
+            enginenumberName.innerHTML = item.enginenumber;
 
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                    console.log(xhr.getAllResponseHeaders());
-                    resolve(xhr.response);
-                }
-                else {
-                    reject(new Error(`${xhr.status}: ${xhr.statusText}`));
-                }
-            };
-            xhr.onerror = () => {
-                reject(new Error(`Ошибка сети. Сервер не отдал код ошибки.`));
-            };
-            if (body) {
-                //xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                xhr.send(body);
-            }
-            else
-                xhr.send();
+            var enginenumberColumn = document.createElement('td');
+            enginenumberColumn.appendChild(enginenumberName);
+
+            var substationnumberColumn = document.createElement('td');
+            substationnumberColumn.innerHTML = item.substationnumber;
+
+            var durationofrunColumn = document.createElement('td');
+            durationofrunColumn.innerHTML = item.durationofrun;
+
+            var enginepowerColumn = document.createElement('td');
+            enginepowerColumn.innerHTML = item.enginepower;
+
+            var startingcurrentColumn = document.createElement('td');
+            startingcurrentColumn.innerHTML = item.startingcurrent;
+
+            var conditionColumn = document.createElement('td');
+            conditionColumn.innerHTML = item.condition;
+
+            tr.appendChild(substationnumberColumn);
+            tr.appendChild(enginenumberColumn);
+            tr.appendChild(enginepowerColumn);
+            tr.appendChild(durationofrunColumn);
+            tr.appendChild(startingcurrentColumn);
+            tr.appendChild(conditionColumn);
+
+            container.appendChild(tr);
+
         });
+
+
     }
+
+    function start() {
+        arrimg=new Array();
+        arrimg[0]=new Image();
+        arrimg[0].src="nasosnaya1.jpg";
+        document.getElementById("pict1").appendChild(arrimg[0]);
+    }
+
 </script>
+<input type="file" id="file">
+<button onclick="read()">
+    Чтение!
+</button>
+
+<div id="out"></div>
+
+<span id="pict_plan">     </span>
+
 </body>
 </html>
+

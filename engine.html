@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        table {
+            border: 1px solid darkblue;        }
+        td,
+        th {
+            border: 1px solid rebeccapurple;
+        }
+    </style>
+</head>
+<body>
+<table id="table">
+    <tr>
+        <th>Номер объекта</th>
+        <th>Номер двигателя</th>
+        <th>Мощность двигателя</th>
+        <th>Дата и время</th>
+        <th>Длительность запуска</th>
+        <th>Пусковой ток</th>
+        <th>Состояние</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<input type="button" id="sv" value="Сохранить">
+<script>
+
+    let json = JSON.stringify(myfile.json);
+
+    alert(typeof json); // мы получили строку!
+
+    alert(json);
+
+
+    var items = [{
+        substationnumber: '43',
+        enginenumber: '161-2',
+        enginepower: '110 кВт',
+        data: '2019-05-01 19:45',
+        durationofrun: '5 с',
+        startingcurrent: '2894,7 А',
+        condition: 'удовл.'
+    },
+    {
+        substationnumber: '43',
+        enginenumber: '161-2',
+        enginepower: '110 кВт',
+        data: '2019-05-01 20:01',
+        durationofrun: '6 с',
+        startingcurrent: '2898 А',
+        condition: 'удовл.'
+    },
+    {
+        substationnumber: '43',
+        enginenumber: '161-2',
+        enginepower: '110 кВт',
+        data: '2019-05-01 20:15',
+        durationofrun: '6 с',
+        startingcurrent: '2900 А',
+        condition: 'удовл.'
+    },
+    {
+        substationnumber: '43',
+        enginenumber: '161-2',
+        enginepower: '110 кВт',
+        data: '2019-05-01 20:31',
+        durationofrun: '19 с',
+        startingcurrent: '4342,1 А',
+        condition: 'требуется ремонт'
+    },
+    {
+        substationnumber: '43',
+        enginenumber: '161-2',
+        enginepower: '110 кВт',
+        data: '2019-05-01 20:59',
+        durationofrun: '20 с',
+        startingcurrent: '4343 А',
+        condition: 'требуется ремонт'
+    }
+    ]
+
+    var container = document.getElementById("table").getElementsByTagName("tbody")[0];
+
+    items.forEach(item => {
+        var tr = document.createElement("tr");
+
+        var enginenumberName = document.createElement('a');
+        enginenumberName.innerHTML = item.enginenumber;
+
+        var enginenumberColumn = document.createElement('td');
+        enginenumberColumn.appendChild(enginenumberName);
+
+        var substationnumberColumn = document.createElement('td');
+        substationnumberColumn.innerHTML = item.substationnumber;
+
+        var durationofrunColumn = document.createElement('td');
+        durationofrunColumn.innerHTML = item.durationofrun;
+
+        var enginepowerColumn = document.createElement('td');
+        enginepowerColumn.innerHTML = item.enginepower;
+
+        var dataColumn = document.createElement('td');
+        dataColumn.innerHTML = item.data;
+
+        var startingcurrentColumn = document.createElement('td');
+        startingcurrentColumn.innerHTML = item.startingcurrent;
+
+        var conditionColumn = document.createElement('td');
+        conditionColumn.innerHTML = item.condition;
+
+        tr.appendChild(substationnumberColumn);
+        tr.appendChild(enginenumberColumn);
+        tr.appendChild(enginepowerColumn);
+        tr.appendChild(dataColumn);
+        tr.appendChild(durationofrunColumn);
+        tr.appendChild(startingcurrentColumn);
+        tr.appendChild(conditionColumn);
+
+        container.appendChild(tr);
+    });
+
+
+
+</script>
+</body>
+</html>
