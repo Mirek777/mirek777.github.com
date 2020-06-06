@@ -1,74 +1,103 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <script>
-      <!--
-      function Complete()
-      {
-        var Bitem= parseFloat(document.Sel1.heightitem.value);
-        var Hitem= parseFloat(document.Sel1.widthitem.value);
-        var Litem= parseFloat(document.Sel1.lengthitem.value);
-        var Vitem = Bitem * Hitem * Litem;
-
-        var Elem="Высота, мм: " + document.Sel1.heightitem.value +
-          "\nШирина, мм: " + document.Sel1.widthitem.value +
-          "\nДлина, мм: " + document.Sel1.lengthitem.value+
-          "\nЗначит объем составляет = " + Vitem + " куб. мм.";
-        alert(Elem);
-
-
-      }
-      function CheckSize(sizeitem)
-      {
-        if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
-          return "6000";
-        else
-          return  sizeitem;
-      }
-      //-->
-    </script>
-</head>
-<body>
-<H1>Расчет железобетонных конструкций</H1>
-<H3>Укажите размеры</H3>
-<FORM NAME="Sel1">
-    <!-- форма -->
-    <TABLE>
-        <TR><TD><B>(h) высота балки в мм:<B></TD>
-            <TD><INPUT NAME="heightitem" SIZE=3
-                       onBlur="this.value=CheckSize(this.value)"
-                       onFocus="this.select()"></TD></TR>
-        <TR><TD><B>(b) ширина балки в мм:<B></TD>
-            <TD><INPUT NAME="widthitem" SIZE=3
-                       onBlur="this.value=CheckSize(this.value)"
-                       onFocus="this.select()"></TD></TR>
-        <TR><TD><B>(L) длина балки в мм:<B></TD>
-            <TD><INPUT NAME="lengthitem" SIZE=3
-                       onBlur="this.value=CheckSize(this.value)"
-                       onFocus="this.select()"></TD></TR>
-    </TABLE>
-    <!-- Кнопки готовности и сброса -->
-    <INPUT TYPE="button" VALUE="Готово" onClick="Complete();">
-    <INPUT TYPE="reset" VALUE="Сброс">
-</FORM>
-</body>
-
-
-<head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>РАСЧЕТ КОНСТРУКЦИЙ</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        .main {
+            padding: 50px;
+        }
+    </style>
 </head>
 <body>
 
-<div style="width: 750px; height: 700px">
-    <canvas id="canvas"></canvas>
+<div class="main">
+    <div class="container-fluid">
+        <img src="ITEM2.jpg" class="img-fluid" alt="Responsive image">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col"></div>
+                <div class="col-10">
+                    <h1 class="card-title">Расчет железобетонных конструкций
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Укажите размеры
+                        </h5>
+                        <p class="card-text"></p>
+                        <form name="Sel1">
+                            <div class="form-group">
+                                <label>(h) высота балки в мм:</label>
+                                <input class="form-control" name="heightitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(b) ширина балки в мм:</label>
+                                <input class="form-control" name="widthitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(L) длина балки в мм:</label>
+                                <input class="form-control" name="lengthitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+                            </div>
+
+                            <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
+                                Готово
+                            </button>
+                            <button class="btn btn-danger" type="reset" value="Сброс">
+                                Сброс
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="canvas"></canvas>
+
+                        <button id="randomize" class="btn btn-danger" type="reset">
+                            Рандом
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            Логи:
+                        </h6>
+                        <pre>
+1. Расчет функции
+2. Подготовка данных...
+3. Рисуем красивый график...
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script>
+  function ScalingFactor() {
+    const exampleDataSet = [
+      [2.35, 2, 2.3, 2.8, 3.3, 3.8, 4.3],
+      [2.15, 2.2, 2.1, 2.9, 3.1, 3.5, 4.1],
+      [2.55, 2.5, 2.6, 2.7, 3.9, 3.1, 4.1],
+      [2.45, 2.5, 2.3, 2.1, 3.5, 3.6, 4.6]
+    ];
+
+    return exampleDataSet[Math.floor(Math.random() * exampleDataSet.length)];
+  }
+</script>
+
 <script type="text/javascript">
-  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var config = {
+  const config = {
     type: 'line',
     data: {
       labels: ['0.0006', '0.0002', '0.0006', '0.0012', '0.0018', '0.0025', '0.0032'],
@@ -76,9 +105,7 @@
         label: 'Давление',
         backgroundColor: 'red',
         borderColor: 'red',
-        data: [
-          2.35, 2, 2.3, 2.8, 3.3, 3.8, 4.3
-        ],
+        data: ScalingFactor(),
         fill: false,
       }]
     },
@@ -122,10 +149,46 @@
     }
   };
 
+
+
   window.onload = function() {
-    var ctx = document.getElementById('canvas').getContext('2d');
+    const ctx = document.getElementById('canvas').getContext('2d');
     window.myLine = new Chart(ctx, config);
   };
+
+  // Пример как обновлять данные
+  document.getElementById('randomize').addEventListener('click', function() {
+    config.data.datasets.forEach(function(dataset) {
+      dataset.data = ScalingFactor();
+    });
+
+    window.myLine.update();
+  });
+
+  function Complete()
+  {
+    var Bitem= parseFloat(document.Sel1.heightitem.value);
+    var Hitem= parseFloat(document.Sel1.widthitem.value);
+    var Litem= parseFloat(document.Sel1.lengthitem.value);
+    var Vitem = Bitem * Hitem * Litem;
+
+    var Elem="Высота, мм: " + document.Sel1.heightitem.value +
+      "\nШирина, мм: " + document.Sel1.widthitem.value +
+      "\nДлина, мм: " + document.Sel1.lengthitem.value+
+      "\nЗначит объем составляет = " + Vitem + " куб. мм.";
+    alert(Elem);
+
+
+  }
+  function CheckSize(sizeitem)
+  {
+    if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
+      return "6000";
+    else
+      return  sizeitem;
+  }
+
+
 </script>
 </body>
 </html>
