@@ -1,24 +1,30 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script>
       <!--
       function Complete()
       {
-        var Elem="Фамилия: " + document.Sel1.Family.value +
-          "\nВысота: " + document.Sel1.Name.value +
-          "\nШирина: " + document.Sel1.Age.value +
-          "\nДлина: " + document.Sel1.Phone.value;
+        var Bitem= parseFloat(document.Sel1.heightitem.value);
+        var Hitem= parseFloat(document.Sel1.widthitem.value);
+        var Litem= parseFloat(document.Sel1.lengthitem.value);
+        var Vitem = Bitem * Hitem * Litem;
+
+        var Elem="Высота, мм: " + document.Sel1.heightitem.value +
+          "\nШирина, мм: " + document.Sel1.widthitem.value +
+          "\nДлина, мм: " + document.Sel1.lengthitem.value+
+          "\nЗначит объем составляет = " + Vitem + " куб. мм.";
         alert(Elem);
+
+
       }
-      function CheckAge(age)
+      function CheckSize(sizeitem)
       {
-        if(age<18)
-          return "18";
+        if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
+          return "6000";
         else
-          return  age;
+          return  sizeitem;
       }
       //-->
     </script>
@@ -26,20 +32,20 @@
 <body>
 <H1>Заполните анкету</H1>
 <FORM NAME="Sel1">
-    <!-- форма -->
+    <!-- Анкета -->
     <TABLE>
-        <TR><TD><B>высота балки:<B></TD>
-            <TD><INPUT NAME="Family" SIZE=20
-                       onBlur="this.value=this.value.toUpperCase()"></TD></TR>
-        <TR><TD><B>ширина балки:<B></TD>
-            <TD><INPUT NAME="Name" SIZE=20
-                       onBlur="this.value=this.value.toUpperCase()"></TD></TR>
-        <TR><TD><B>длина балки:<B></TD>
-            <TD><INPUT NAME="Age" SIZE=3 VALUE="18"
-                       onBlur="this.value=CheckAge(this.value)"
+        <TR><TD><B>высота балки в мм:<B></TD>
+            <TD><INPUT NAME="heightitem" SIZE=3
+                       onBlur="this.value=CheckSize(this.value)"
                        onFocus="this.select()"></TD></TR>
-        <TR><TD><B>Телефон:<B></TD>
-            <TD><INPUT NAME="Phone" SIZE=10></TD></TR>
+        <TR><TD><B>ширина балки в мм:<B></TD>
+            <TD><INPUT NAME="widthitem" SIZE=3
+                       onBlur="this.value=CheckSize(this.value)"
+                       onFocus="this.select()"></TD></TR>
+        <TR><TD><B>длина балки в мм:<B></TD>
+            <TD><INPUT NAME="lengthitem" SIZE=3
+                       onBlur="this.value=CheckSize(this.value)"
+                       onFocus="this.select()"></TD></TR>
     </TABLE>
     <!-- Кнопки готовности и сброса -->
     <INPUT TYPE="button" VALUE="Готово" onClick="Complete();">
