@@ -42,10 +42,19 @@
 
                                 <label>(L) длина балки в мм:</label>
                                 <input class="form-control" name="lengthitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(a) угол в град:</label>
+                                <input class="form-control" name="angelitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
                             </div>
 
                             <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
                                 Готово
+                            </button>
+                            <button class="btn btn-light" type="buttonSin" value="Math" onclick="MathSin();">
+                                Синус
+                            </button>
+                            <button class="btn btn-light" type="buttonCos" value="Math" onclick="MathCos();">
+                                Косинус
                             </button>
                             <button class="btn btn-danger" type="reset" value="Сброс">
                                 Сброс
@@ -60,7 +69,7 @@
                         <canvas id="canvas"></canvas>
 
                         <button id="randomize" class="btn btn-danger" type="reset">
-                            Рандом
+                            RANDOM
                         </button>
                     </div>
                 </div>
@@ -72,9 +81,28 @@
                             Логи:
                         </h6>
                         <pre>
-1. Расчет функции
-2. Подготовка данных...
-3. Рисуем красивый график...
+Актуальность настоящей работы обусловлена необходимостью создания доступного облачного сервиса
+             для проведения предварительного расчета и оценки при проектировании железобетонной конструкции.
+Объектом исследования является проектирование железобетонных конструкций.
+Предмет исследования – методики расчета конструкции и доступные средства
+                    для выполнения расчета железобетонных конструкций.
+Цель – теоретический анализ методик расчета железобетонных конструкций
+                    и разработка облачного сервиса производящего расчет.
+Научная новизна работы состоит в реализации технических возможностей
+                    платформы ASP.Net и среды разработки Visual Studio при выполнении расчета железобетонных конструкций.
+Практическая значимость работы заключается в создании кросс-браузерного
+                    онлайн-ресурса предназначенного для выполнения расчетов железобетонных конструкций.
+Задачи, которые необходимо решить в ходе выполнения работы:
+- описать существующие методики и расчета конструкций;
+- определить вероятную методику расчета;
+- проанализировать  и определить средства разработки;
+- на основе анализа средств выявить язык программирования;
+- выявить требования к системе, предоставляющей средства расчета;
+- разработать структуру сайта;
+- изучить среду разработки;
+- на основе данной среды создать прототип сайта;
+- протестировать данную систему.
+
                         </pre>
                     </div>
                 </div>
@@ -177,9 +205,22 @@
       "\nДлина, мм: " + document.Sel1.lengthitem.value+
       "\nЗначит объем составляет = " + Vitem + " куб. мм.";
     alert(Elem);
-
-
   }
+
+  function MathSin()
+  {
+    var AngelSin = parseFloat(document.Sel1.angelitem.value);
+    with(Math){n=sin(AngelSin*PI/180);}
+    alert(n);
+  }
+
+  function MathCos()
+  {
+    var AngelCos = parseFloat(document.Sel1.angelitem.value);
+    with(Math){m=cos(AngelCos*PI/180);}
+    alert(m);
+  }
+
   function CheckSize(sizeitem)
   {
     if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
