@@ -1,147 +1,126 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <title>Контроль технического состояния электродвигателей</title>
-    <style>
-        table {
-            border: 1px solid blue;        }
-        td,
-        th {
-            border: 1px solid rebeccapurple;
-        }
-    </style>
-    <script src="dopapp.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <script>
+      <!--
+      function Complete()
+      {
+        var Elem="Фамилия: " + document.Sel1.Family.value +
+          "\nВысота: " + document.Sel1.Name.value +
+          "\nШирина: " + document.Sel1.Age.value +
+          "\nДлина: " + document.Sel1.Phone.value;
+        alert(Elem);
+      }
+      function CheckAge(age)
+      {
+        if(age<18)
+          return "18";
+        else
+          return  age;
+      }
+      //-->
+    </script>
 </head>
 <body>
-<h1> Контроль состояния электродвигателей </h1>
-<p>Насосная станция</p>
-<table id="table">
-    <tr>
-        <th>Номер объекта</th>
-        <th>Номер двигателя</th>
-        <th>Мощность двигателя</th>
-        <th>Длительность запуска</th>
-        <th>Пусковой ток</th>
-        <th>Состояние</th>
-    </tr>
+<H1>Заполните анкету</H1>
+<FORM NAME="Sel1">
+    <!-- форма -->
+    <TABLE>
+        <TR><TD><B>высота балки:<B></TD>
+            <TD><INPUT NAME="Family" SIZE=20
+                       onBlur="this.value=this.value.toUpperCase()"></TD></TR>
+        <TR><TD><B>ширина балки:<B></TD>
+            <TD><INPUT NAME="Name" SIZE=20
+                       onBlur="this.value=this.value.toUpperCase()"></TD></TR>
+        <TR><TD><B>длина балки:<B></TD>
+            <TD><INPUT NAME="Age" SIZE=3 VALUE="18"
+                       onBlur="this.value=CheckAge(this.value)"
+                       onFocus="this.select()"></TD></TR>
+        <TR><TD><B>Телефон:<B></TD>
+            <TD><INPUT NAME="Phone" SIZE=10></TD></TR>
+    </TABLE>
+    <!-- Кнопки готовности и сброса -->
+    <INPUT TYPE="button" VALUE="Готово" onClick="Complete();">
+    <INPUT TYPE="reset" VALUE="Сброс">
+</FORM>
+</body>
 
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<span id="pict1">     </span>
-<input type="button" value="Загрузить данные" onclick="downl();" />
-
-<span id="pict1">     </span>
-<input type="button" value="План помещения" onclick="start();" />
-<script src="dopapp.js"></script>
-<script>
 
 
-    var items =  [{
-        substationnumber: '41',
-        enginenumber: '161-1',
-        enginepower: '110 кВт',
-        durationofrun: '5 с',
-        startingcurrent: '2894,7 А',
-        condition: 'удовл.',
-        link: 'engine.html'
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+
+<div style="width: 750px; height: 700px">
+    <canvas id="canvas"></canvas>
+</div>
+
+<script type="text/javascript">
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var config = {
+    type: 'line',
+    data: {
+      labels: ['0.0006', '0.0002', '0.0006', '0.0012', '0.0018', '0.0025', '0.0032'],
+      datasets: [{
+        label: 'Давление',
+        backgroundColor: 'red',
+        borderColor: 'red',
+        data: [
+          2.35, 2, 2.3, 2.8, 3.3, 3.8, 4.3
+        ],
+        fill: false,
+      }]
     },
-        {
-            substationnumber: '42',
-            enginenumber: '160-5',
-            enginepower: '150 кВт',
-            durationofrun: '7 с',
-            startingcurrent: '3947,4 А',
-            condition: 'удовл.',
-            link: 'engine.html'
-        },
-        {
-            substationnumber: '41',
-            enginenumber: '161-1',
-            enginepower: '110 кВт',
-            durationofrun: '5 с',
-            startingcurrent: '2894,7 А',
-            condition: 'удовл.',
-            link: 'engine.html'
-        },
-        {
-            substationnumber: '42',
-            enginenumber: '160-5',
-            enginepower: '150 кВт',
-            durationofrun: '7 с',
-            startingcurrent: '3947,4 А',
-            condition: 'удовл.',
-            link: 'engine.html'
-        },
-        {   substationnumber: '43',
-            enginenumber: '161-2',
-            enginepower: '110 кВт',
-            durationofrun: '20 с',
-            startingcurrent: '4342,1 А',
-            condition: 'требуется ремонт',
-            link: 'engine.html'
-        }];
-
-    function downl() {
-        var container = document.getElementById("table").getElementsByTagName("tbody")[0];
-        items.forEach(item => {
-            var tr = document.createElement("tr");
-
-            var enginenumberName = document.createElement('a');
-            enginenumberName.href = item.link;
-            enginenumberName.innerHTML = item.enginenumber;
-
-            var enginenumberColumn = document.createElement('td');
-            enginenumberColumn.appendChild(enginenumberName);
-
-            var substationnumberColumn = document.createElement('td');
-            substationnumberColumn.innerHTML = item.substationnumber;
-
-            var durationofrunColumn = document.createElement('td');
-            durationofrunColumn.innerHTML = item.durationofrun;
-
-            var enginepowerColumn = document.createElement('td');
-            enginepowerColumn.innerHTML = item.enginepower;
-
-            var startingcurrentColumn = document.createElement('td');
-            startingcurrentColumn.innerHTML = item.startingcurrent;
-
-            var conditionColumn = document.createElement('td');
-            conditionColumn.innerHTML = item.condition;
-
-            tr.appendChild(substationnumberColumn);
-            tr.appendChild(enginenumberColumn);
-            tr.appendChild(enginepowerColumn);
-            tr.appendChild(durationofrunColumn);
-            tr.appendChild(startingcurrentColumn);
-            tr.appendChild(conditionColumn);
-
-            container.appendChild(tr);
-
-        });
-
-
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Заголовок'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 't, с.'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'x1, м.'
+          },
+          ticks: {
+            min: 2,
+            max: 5,
+            stepSize: 0.5,
+            suggestedMin: 0.5,
+            suggestedMax: 5.5,
+          },
+        }]
+      }
     }
+  };
 
-    function start() {
-        arrimg=new Array();
-        arrimg[0]=new Image();
-        arrimg[0].src="nasosnaya1.jpg";
-        document.getElementById("pict1").appendChild(arrimg[0]);
-    }
-
+  window.onload = function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+  };
 </script>
-<input type="file" id="file">
-<button onclick="read()">
-    Чтение!
-</button>
-
-<div id="out"></div>
-
-<span id="pict_plan">     </span>
-
 </body>
 </html>
-
