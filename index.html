@@ -48,12 +48,12 @@
                             </div>
 
                             <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
-                                Готово
+                                Объем
                             </button>
-                            <button class="btn btn-light" type="buttonSin" value="Math" onclick="MathSin();">
+                            <button class="btn btn-light" type="button" value="Math" onclick="MathSin();">
                                 Синус
                             </button>
-                            <button class="btn btn-light" type="buttonCos" value="Math" onclick="MathCos();">
+                            <button class="btn btn-light" type="button" value="Math" onclick="MathCos();">
                                 Косинус
                             </button>
                             <button class="btn btn-danger" type="reset" value="Сброс">
@@ -210,14 +210,16 @@
   function MathSin()
   {
     var AngelSin = parseFloat(document.Sel1.angelitem.value);
-    with(Math){n=sin(AngelSin*PI/180);}
-    alert(n);
+    var degree = AngelSin * Math.PI / 180;
+    var m=parseFloat(Math.cos(degree).toFixed(5));
+    alert(m);
   }
 
   function MathCos()
   {
     var AngelCos = parseFloat(document.Sel1.angelitem.value);
-    with(Math){m=cos(AngelCos*PI/180);}
+    var degree = AngelCos * Math.PI / 180;
+    var m=parseFloat(Math.cos(degree).toFixed(5));
     alert(m);
   }
 
