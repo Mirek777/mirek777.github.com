@@ -153,8 +153,6 @@ w – прогиб
     }
   };
 
-
-
   function ScalingFactor() {
     // var hItem= parseFloat(document.Sel1.heightitem.value);
     // var bItem= parseFloat(document.Sel1.widthitem.value);
@@ -163,7 +161,7 @@ w – прогиб
     for (let i = 20, t=0; i <= 160; i+=20)
     {
       let y = CalculationDeflection(i);
-      ChartDataSet[i] = y.toFixed(1);
+      ChartDataSet.push(y.toFixed(1));
       t = t + 20;
     };
     return ChartDataSet;
@@ -221,9 +219,12 @@ w – прогиб
     //   * (0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) * (0.1088877397e10 * b * h * l * l - 0.1069040705e13) / h * Math.pow(l, -2))
     //   * Math.pow(0.1e1 - 0.4480e4 * h, -0.1e1 / 0.2e1) / b * Math.pow(l, -2) - 0.1575000000e-9 * (0.4360000e7 * b * h +
     //     0.4004123892e13 * t - 0.1001030973e10) / b)/100000;
+
+    // первоначальная формула
     var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
       Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
 
+    // var x = (t*2/500);
     return (x)
   }
 
