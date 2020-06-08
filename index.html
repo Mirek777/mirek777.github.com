@@ -48,7 +48,7 @@
                             </div>
 
                             <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
-                                Объем
+                                Расчет
                             </button>
                             <button class="btn btn-light" type="button" value="Math" onclick="MathSin();">
                                 Синус
@@ -98,7 +98,6 @@ w – прогиб
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
   const config = {
@@ -153,34 +152,35 @@ w – прогиб
     }
   };
 
-  function ScalingFactor() {
-    // var hItem= parseFloat(document.Sel1.heightitem.value);
-    // var bItem= parseFloat(document.Sel1.widthitem.value);
-    // var lItem= parseFloat(document.Sel1.lengthitem.value);
-    let ChartDataSet = [];
-    for (let i = 20, t=0; i <= 160; i+=20)
-    {
-      let y = CalculationDeflection(i);
-      ChartDataSet.push(y.toFixed(1));
-      t = t + 20;
-    };
-    return ChartDataSet;
-  }
-
   function Complete()
   {
     var Hitem= parseFloat(document.Sel1.heightitem.value);
     var Bitem= parseFloat(document.Sel1.widthitem.value);
     var Litem= parseFloat(document.Sel1.lengthitem.value);
     var Vitem = Hitem * Bitem * Litem;
+    ScalingFactor(Hitem);
 
     var Elem="Высота, мм: " + document.Sel1.heightitem.value +
       "\nШирина, мм: " + document.Sel1.widthitem.value +
       "\nДлина, мм: " + document.Sel1.lengthitem.value+
       "\nЗначит объем составляет = " + Vitem + " куб. мм.";
-    alert(Elem);
+    // alert(Elem);
   }
 
+  function ScalingFactor(razmer) {
+    // var hItem= parseFloat(document.Sel1.heightitem.value);
+    // var bItem= parseFloat(document.Sel1.widthitem.value);
+    // var lItem= parseFloat(document.Sel1.lengthitem.value);
+    let gey = razmer;
+    let ChartDataSet = [];
+    for (let i = 20, t=0; i <= 160; i+=20)
+    {
+      let y = CalculationDeflection(i, gey);
+      ChartDataSet.push(y.toFixed(1));
+      t = t + 20;
+    };
+    return ChartDataSet;
+  }
   function MathSin()
   {
     var AngelSin = parseFloat(document.Sel1.angelitem.value);
@@ -205,7 +205,7 @@ w – прогиб
       return  sizeitem;
   }
 
-  function CalculationDeflection(t, h, b, l)
+  function CalculationDeflection(t, g)
   {
     // var x = (-0.3150000000e-21 * Math.exp(0.1785714286e1 / h * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) *
     //   t) / Math.exp(-0.1785714286e-14 * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) * (0.1088877397e10 * b * h * l * l
@@ -221,10 +221,10 @@ w – прогиб
     //     0.4004123892e13 * t - 0.1001030973e10) / b)/100000;
 
     // первоначальная формула
-    var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
-      Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
+    // var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
+    //   Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
 
-    // var x = (t*2/500);
+    var x = (t*g/500);
     return (x)
   }
 
