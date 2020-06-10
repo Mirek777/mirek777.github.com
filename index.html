@@ -19,13 +19,12 @@
 <!--создание блоков информации на ресурсе-->
 <div class="main">
     <div class="container-fluid">
-<!--        <div class="container">-->
         <div class="container-md">
             <div class="row align-items-start">
                 <div class="col"></div>
                 <div class="col-10">
                    <blockquote class="blockquote text-center">
-                        <p class="mb-0">Расчет железобетонных конструкций при воздействии нагрузок взрывного характера</p>
+                        <p class="mb-0">РАСЧЕТ ЖЕЛЕЗОБЕТОННЫХ КОНСТРУКЦИЙ ПРИ ВОЗДЕЙСТВИИ НАГРУЗОК ВЗРЫВНОГО ХАРАКТЕРА</p>
                     </blockquote>
 
                 </div>
@@ -169,14 +168,14 @@ w – прогиб
 
   function Complete()
   {
-    // считывание данных формы
+    // считывание данных из формы
     let Hitem= parseFloat(document.Sel1.heightitem.value);
     let Bitem= parseFloat(document.Sel1.widthitem.value);
     let Litem= parseFloat(document.Sel1.lengthitem.value);
 
     // обновляем данные
     config.data.datasets.forEach(function(dataset) {
-      dataset.data = ScalingFactor(Hitem);
+      dataset.data = ScalingFactor(Hitem,Bitem,Litem);
     });
 
     // изм. размерности сетки
@@ -192,11 +191,12 @@ w – прогиб
   }
 
   // расчет массива зачений прогиба для временного интервала
-  function ScalingFactor(razmer) {
+  function ScalingFactor(Hsize, Bsize, Lsize) {
     let ChartDataSet = [];
+
     for (let i = 20, t=0; i <= 160; i+=20)
     {
-      let y = CalculationDeflection(i, razmer);
+      let y = CalculationDeflection(i, Hsize, Bsize, Lsize);
       ChartDataSet.push(parseFloat(y.toFixed(1)));
       t = t + 20;
     };
@@ -204,11 +204,17 @@ w – прогиб
   }
 
   // расчет значения прогиба по формуле выведенной теоретически
-  function CalculationDeflection(t, g)
+  function CalculationDeflection(t, h, b, l)
   {
-    let x = (t*g/100);
-    return (x);
+    // let x = (t*h*b*l/100);
+
     // новая функция
+    // var x = (-0.3150000000e-21 * Math.exp(0.1785714286e1 / h * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) *
+    //   t) / Math.exp(-0.1785714286e-14 * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) * (0.1088877397e10 * b * h * l * l)))
+    //   /100000;
+
+    // var x = (-0.3150000000e-21 * Math.exp(0.1785714286e1 / h * (-0.1e1 + Math.sqrt( 0.4480e4 * h))));
+
     // var x = (-0.3150000000e-21 * Math.exp(0.1785714286e1 / h * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) *
     //   t) / Math.exp(-0.1785714286e-14 * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) * (0.1088877397e10 * b * h * l * l
     //   - 0.1069040705e13) / h * Math.pow(l, -2)) * Math.pow(0.1e1 - 0.4480e4 * h, -0.1e1 / 0.2e1) / b * (0.196617281e9 *
@@ -223,8 +229,10 @@ w – прогиб
     //     0.4004123892e13 * t - 0.1001030973e10) / b)/100000;
 
     // первоначальная формула
-    // var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
-    //   Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
+    var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
+      Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000 * h*h*h * b * l;
+
+    return (x);
   }
 
   // функция расчета синуса

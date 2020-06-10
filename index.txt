@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>РАСЧЕТ КОНСТРУКЦИЙ</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        .main {
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+    <div class="container-fluid">
+        <img src="ITEM2.jpg" class="img-fluid" alt="Responsive image">
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col"></div>
+                <div class="col-10">
+                    <h1 class="card-title">Расчет железобетонных конструкций при воздействии нагрузок взрывного характера
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Укажите размеры
+                        </h5>
+                        <p class="card-text"></p>
+                        <form name="Sel1">
+                            <div class="form-group">
+                                <label>(h) высота балки в мм:</label>
+                                <input class="form-control" name="heightitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(b) ширина балки в мм:</label>
+                                <input class="form-control" name="widthitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(L) длина балки в мм:</label>
+                                <input class="form-control" name="lengthitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+
+                                <label>(a) угол в град:</label>
+                                <input class="form-control" name="angelitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
+                            </div>
+
+                            <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
+                                Объем
+                            </button>
+                            <button class="btn btn-light" type="button" value="Math" onclick="MathSin();">
+                                Синус
+                            </button>
+                            <button class="btn btn-light" type="button" value="Math" onclick="MathCos();">
+                                Косинус
+                            </button>
+                            <button class="btn btn-danger" type="reset" value="Сброс">
+                                Сброс
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="canvas"></canvas>
+
+                        <button id="randomize" class="btn btn-danger" type="reset">
+                            RANDOM
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            Описание коэффициентов:
+                        </h6>
+                        <pre>
+x1 - граница раздела областей пластической и жесткой
+с нарастанием нагрузки она с центра начинает двигаться к краю балки
+P0 - пиковое давление
+t0 - время прихода взрывной волны
+alp - коэффициент характиризующий затухание взрывной волны
+pho - плотность балки, в данном случае бетона
+l - длина балки
+h - высота балки
+b - ширина основания балки
+M0p - предельный момент, зависит от формы поперечного сечения и плотности материала каждого слоя
+qs - распределенная массовая сила (вес поделенный на длину балки)
+m - масса балки
+w – прогиб
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+  function ScalingFactor() {
+    let ChartDataSet = [];
+    for (let i = 0, t=0; i <= 27; i++)
+    {
+      let y = CalculationDeflection(t);
+      ChartDataSet[[i]] = y.toFixed(1);
+      t = t + 20;
+    };
+    return ChartDataSet[Math.floor(Math.random() * ChartDataSet.length)];
+  }
+</script>
+
+<script type="text/javascript">
+  const config = {
+    type: 'line',
+    data: {
+      labels: ['20', '40', '60', '80', '100', '120', '140', '160'],
+      datasets: [{
+        label: 'Значение прогриба',
+        backgroundColor: 'white',
+        borderColor: 'red',
+        data: ScalingFactor(),
+        fill: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Расчет остаточного максимального прогиба'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 't, микросекунд'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'W, миллиметров'
+          },
+          ticks: {
+            min: 0,
+            max: 30,
+            stepSize: 0.5,
+            suggestedMin: 0.5,
+            suggestedMax: 30.5,
+          },
+        }]
+      }
+    }
+  };
+
+  window.onload = function() {
+    const ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+  };
+
+  // Рандомайзер с обновлением данных
+  document.getElementById('randomize').addEventListener('click', function() {
+    config.data.datasets.forEach(function(dataset) {
+      dataset.data = ScalingFactor();
+    });
+
+    window.myLine.update();
+  });
+
+  function Complete()
+  {
+    var Hitem= parseFloat(document.Sel1.heightitem.value);
+    var Bitem= parseFloat(document.Sel1.widthitem.value);
+    var Litem= parseFloat(document.Sel1.lengthitem.value);
+    var Vitem = Hitem * Bitem * Litem;
+
+    var Elem="Высота, мм: " + document.Sel1.heightitem.value +
+      "\nШирина, мм: " + document.Sel1.widthitem.value +
+      "\nДлина, мм: " + document.Sel1.lengthitem.value+
+      "\nЗначит объем составляет = " + Vitem + " куб. мм.";
+    alert(Elem);
+  }
+
+  function MathSin()
+  {
+    var AngelSin = parseFloat(document.Sel1.angelitem.value);
+    var degree = AngelSin * Math.PI / 180;
+    var m=parseFloat(Math.sin(degree).toFixed(8));
+    alert(m);
+  }
+
+  function MathCos()
+  {
+    var AngelCos = parseFloat(document.Sel1.angelitem.value);
+    var degree = AngelCos * Math.PI / 180;
+    var m=parseFloat(Math.cos(degree).toFixed(8));
+    alert(m);
+  }
+
+  function CheckSize(sizeitem)
+  {
+    if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
+      return "6000";
+    else
+      return  sizeitem;
+  }
+
+  function CalculationDeflection(t)
+  {
+    var x = (0.1054926998e2 * Math.exp(-0.1785714286e1 * t) * Math.sin(0.1195095206e3 * t) - 0.3146380630e0 *
+      Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
+    return (x)
+  }
+
+</script>
+</body>
+</html>
