@@ -7,20 +7,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
     <style>
         .main {
-            padding: 50px;
+            padding: 25px;
         }
     </style>
 </head>
 <body>
+<div class="text-center">
+    <img src="ITEM1.jpg" class="rounded" alt="Responsive image">
+</div>
 
+<!--создание блоков информации на ресурсе-->
 <div class="main">
     <div class="container-fluid">
-        <img src="ITEM2.jpg" class="img-fluid" alt="Responsive image">
-        <div class="container">
+<!--        <div class="container">-->
+        <div class="container-md">
             <div class="row align-items-start">
                 <div class="col"></div>
                 <div class="col-10">
-                    <h1 class="card-title">Расчет железобетонных конструкций при воздействии нагрузок взрывного характера
+                   <blockquote class="blockquote text-center">
+                        <p class="mb-0">Расчет железобетонных конструкций при воздействии нагрузок взрывного характера</p>
+                    </blockquote>
+
                 </div>
             </div>
         </div>
@@ -53,9 +60,6 @@
                             <button class="btn btn-light" type="button" value="Math" onclick="MathSin();">
                                 Синус
                             </button>
-                            <button class="btn btn-light" type="button" value="Math" onclick="MathCos();">
-                                Косинус
-                            </button>
                             <button class="btn btn-danger" type="reset" value="Сброс">
                                 Сброс
                             </button>
@@ -87,7 +91,8 @@ pho - плотность балки, в данном случае бетона
 l - длина балки
 h - высота балки
 b - ширина основания балки
-M0p - предельный момент, зависит от формы поперечного сечения и плотности материала каждого слоя
+M0p - предельный момент, зависит от формы
+поперечного сечения и плотности материала каждого слоя
 qs - распределенная массовая сила (вес поделенный на длину балки)
 m - масса балки
 w – прогиб
@@ -99,13 +104,18 @@ w – прогиб
     </div>
 </div>
 
+<div class="text-center">
+    <img src="ITEM2.jpg" class="rounded" alt="Responsive image">
+</div>
+
+<!--создание предварительной формы графика-->
 <script type="text/javascript">
   const config = {
     type: 'line',
     data: {
       labels: ['20', '40', '60', '80', '100', '120', '140', '160'],
       datasets: [{
-        label: 'Значение прогиба',
+        label: 'Расчет остаточного максимального прогиба',
         backgroundColor: 'white',
         borderColor: 'red',
         data: ScalingFactor(),
@@ -116,7 +126,7 @@ w – прогиб
       responsive: true,
       title: {
         display: true,
-        text: 'Расчет остаточного максимального прогиба'
+        text: 'График значений прогиба после воздействия'
       },
       tooltips: {
         mode: 'index',
@@ -159,51 +169,30 @@ w – прогиб
 
   function Complete()
   {
+    // считывание данных формы
     let Hitem= parseFloat(document.Sel1.heightitem.value);
     let Bitem= parseFloat(document.Sel1.widthitem.value);
     let Litem= parseFloat(document.Sel1.lengthitem.value);
-    let Vitem = Hitem * Bitem * Litem;
 
     // обновляем данные
     config.data.datasets.forEach(function(dataset) {
       dataset.data = ScalingFactor(Hitem);
     });
 
-    // вывод в консоль
-    console.log(config.data.datasets[0].data);
-
-    // тут обновляем размерность сетки
+    // изм. размерности сетки
     let min = Math.min(...config.data.datasets[0].data);
     let max = Math.max(...config.data.datasets[0].data);
 
-    /**
-     отдельные функции
-     function updateScope(min, max) {
-		config.options.scales.yAxes[0].ticks.min = min;
-		config.options.scales.yAxes[0].ticks.max = max;
-	  }
-
-     updateScope(min, max);
-     ```
-     */
     config.options.scales.yAxes[0].ticks.min = min;
     config.options.scales.yAxes[0].ticks.max = max;
     config.options.scales.yAxes[0].ticks.stepSize = average(config.data.datasets[0].data);
 
-    // обновляем график с новыми данными
+    // обновление графика с новыми данными
     window.myLine.update(config.data.datasets);
-
-    let Elem="Высота, мм: " + document.Sel1.heightitem.value +
-      "\nШирина, мм: " + document.Sel1.widthitem.value +
-      "\nДлина, мм: " + document.Sel1.lengthitem.value+
-      "\nЗначит объем составляет = " + Vitem + " куб. мм.";
-    // alert(Elem);
   }
 
+  // расчет массива зачений прогиба для временного интервала
   function ScalingFactor(razmer) {
-    // var hItem= parseFloat(document.Sel1.heightitem.value);
-    // var bItem= parseFloat(document.Sel1.widthitem.value);
-    // var lItem= parseFloat(document.Sel1.lengthitem.value);
     let ChartDataSet = [];
     for (let i = 20, t=0; i <= 160; i+=20)
     {
@@ -211,11 +200,10 @@ w – прогиб
       ChartDataSet.push(parseFloat(y.toFixed(1)));
       t = t + 20;
     };
-    //alert(ChartDataSet);
     return ChartDataSet;
-    // return exampleDataSet[Math.floor(Math.random() * exampleDataSet.length)];
   }
 
+  // расчет значения прогиба по формуле выведенной теоретически
   function CalculationDeflection(t, g)
   {
     let x = (t*g/100);
@@ -239,6 +227,7 @@ w – прогиб
     //   Math.exp(-0.1785714286e1 * t) * Math.cos(0.1195095206e3 * t) - 0.1261299025e4 * t + 0.3146380562e0)/100000;
   }
 
+  // функция расчета синуса
   function MathSin()
   {
     var AngelSin = parseFloat(document.Sel1.angelitem.value);
@@ -247,17 +236,10 @@ w – прогиб
     alert(m);
   }
 
-  function MathCos()
-  {
-    var AngelCos = parseFloat(document.Sel1.angelitem.value);
-    var degree = AngelCos * Math.PI / 180;
-    var m=parseFloat(Math.cos(degree).toFixed(8));
-    alert(m);
-  }
-
+  // проверка размера, не может быть менее единицы или более 6000 мм по ГОСТ
   function CheckSize(sizeitem)
   {
-    if((sizeitem>6001) || isNaN(sizeitem) || (sizeitem<1))
+    if((sizeitem>6000) || isNaN(sizeitem) || (sizeitem<1))
       return "6000";
     else
       return  sizeitem;
