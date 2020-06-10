@@ -152,15 +152,48 @@ w – прогиб
     }
   };
 
+  // среднее значение из массива
+  function average(array) {
+    return array.reduce((p, c) => p + c, 0) / array.length;
+  }
+
   function Complete()
   {
-    var Hitem= parseFloat(document.Sel1.heightitem.value);
-    var Bitem= parseFloat(document.Sel1.widthitem.value);
-    var Litem= parseFloat(document.Sel1.lengthitem.value);
-    var Vitem = Hitem * Bitem * Litem;
-    ScalingFactor(Hitem);
+    let Hitem= parseFloat(document.Sel1.heightitem.value);
+    let Bitem= parseFloat(document.Sel1.widthitem.value);
+    let Litem= parseFloat(document.Sel1.lengthitem.value);
+    let Vitem = Hitem * Bitem * Litem;
 
-    var Elem="Высота, мм: " + document.Sel1.heightitem.value +
+    // обновляем данные
+    config.data.datasets.forEach(function(dataset) {
+      dataset.data = ScalingFactor(Hitem);
+    });
+
+    // вывод в консоль
+    console.log(config.data.datasets[0].data);
+
+    // тут обновляем размерность сетки
+    let min = Math.min(...config.data.datasets[0].data);
+    let max = Math.max(...config.data.datasets[0].data);
+
+    /**
+     отдельные функции
+     function updateScope(min, max) {
+		config.options.scales.yAxes[0].ticks.min = min;
+		config.options.scales.yAxes[0].ticks.max = max;
+	  }
+
+     updateScope(min, max);
+     ```
+     */
+    config.options.scales.yAxes[0].ticks.min = min;
+    config.options.scales.yAxes[0].ticks.max = max;
+    config.options.scales.yAxes[0].ticks.stepSize = average(config.data.datasets[0].data);
+
+    // обновляем график с новыми данными
+    window.myLine.update(config.data.datasets);
+
+    let Elem="Высота, мм: " + document.Sel1.heightitem.value +
       "\nШирина, мм: " + document.Sel1.widthitem.value +
       "\nДлина, мм: " + document.Sel1.lengthitem.value+
       "\nЗначит объем составляет = " + Vitem + " куб. мм.";
@@ -175,16 +208,17 @@ w – прогиб
     for (let i = 20, t=0; i <= 160; i+=20)
     {
       let y = CalculationDeflection(i, razmer);
-      ChartDataSet.push(y.toFixed(1));
+      ChartDataSet.push(parseFloat(y.toFixed(1)));
       t = t + 20;
     };
-    alert(ChartDataSet);
+    //alert(ChartDataSet);
     return ChartDataSet;
+    // return exampleDataSet[Math.floor(Math.random() * exampleDataSet.length)];
   }
 
   function CalculationDeflection(t, g)
   {
-    var x = (t*g/100);
+    let x = (t*g/100);
     return (x);
     // новая функция
     // var x = (-0.3150000000e-21 * Math.exp(0.1785714286e1 / h * (-0.1e1 + Math.sqrt(0.1e1 - 0.4480e4 * h)) *
