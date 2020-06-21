@@ -15,11 +15,12 @@
 
 <!--создание блоков информации на ресурсе-->
 <div class="main">
+        <div class="text-center">
+            <img src="ITEM1.jpg" class="img-fluid" alt="Responsive image">
+        </div>
     <div class="container-fluid">
         <div class="container-md">
-            <div class="text-center">
-                <img src="ITEM1.jpg" class="img-fluid" alt="Responsive image">
-            </div>
+
             <div class="row align-items-start">
                 <div class="col"></div>
                 <div class="col-10">
@@ -53,11 +54,12 @@
                                 <input class="form-control" name="angelitem" size="3" onblur="this.value=CheckSize(this.value)" onfocus="this.select()">
                             </div>
 
-                            <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
-                                Расчет
-                            </button>
+
                             <button class="btn btn-light" type="button" value="Math" onclick="MathSin();">
                                 Синус
+                            </button>
+                            <button class="btn btn-primary" type="button" value="Готово" onclick="Complete();">
+                                Расчет
                             </button>
                             <button class="btn btn-danger" type="reset" value="Сброс">
                                 Сброс
@@ -78,29 +80,35 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title">
+                            Методика расчета:
+
+                        </h6>
+       <div class="text-center">
+            <img src="calculation.jpg" class="img-fluid" alt="Responsive image">
+        </div>
+
+                        <h6 class="card-title">
                             Описание коэффициентов:
+
                         </h6>
                         <pre>
-x1 - граница раздела областей пластической и жесткой
-с нарастанием нагрузки она с центра начинает двигаться к краю балки
-P0 - пиковое давление
-t0 - время прихода взрывной волны
-alp - коэффициент характиризующий затухание взрывной волны
 pho - плотность балки, в данном случае бетона
-l - длина балки
-h - высота балки
-b - ширина основания балки
-M0p - предельный момент, зависит от формы
-поперечного сечения и плотности материала каждого слоя
-qs - распределенная массовая сила (вес поделенный на длину балки)
+l/h/b - длина/высота/ширина балки
 m - масса балки
-w – прогиб
+qs - распределенная массовая сила 
+w – прогиб балки
+g - ускорение свободного падения
+ρ - плотность бетона балки
+t0 - время прихода взрывной волны
+P0 - пиковое давление
+Mop - предельный момент
                         </pre>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="text-center">
         <img src="ITEM2.jpg" class="img-fluid" alt="Responsive image">
     </div>
