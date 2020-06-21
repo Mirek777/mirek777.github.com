@@ -92,12 +92,14 @@
 
                         </h6>
                         <pre>
-pho - плотность балки, в данном случае бетона
+pho - плотность балки (бетона)
 l/h/b - длина/высота/ширина балки
 m - масса балки
 qs - распределенная массовая сила 
 w – прогиб балки
 g - ускорение свободного падения
+k1 - коэффициент упругости
+k2 - коэффициент вязкости
 ρ - плотность бетона балки
 t0 - время прихода взрывной волны
 P0 - пиковое давление
@@ -108,9 +110,8 @@ Mop - предельный момент
             </div>
         </div>
     </div>
-
     <div class="text-center">
-        <img src="ITEM2.jpg" class="img-fluid" alt="Responsive image">
+        <a href="http://степановалександрниколаевич.рф" target="_blank"><img src="ITEM2.jpg"></a>
     </div>
 </div>
 
@@ -248,7 +249,7 @@ Mop - предельный момент
     var AngelSin = parseFloat(document.Sel1.angelitem.value);
     var degree = AngelSin * Math.PI / 180;
     var m=parseFloat(Math.sin(degree).toFixed(8));
-    alert(m);
+    alert("синус " + AngelSin +" градусов равен " + m);
   }
 
   // проверка размера, не может быть менее единицы или более 6000 мм по ГОСТ
